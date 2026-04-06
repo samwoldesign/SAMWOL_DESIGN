@@ -65,6 +65,48 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .guide-in{padding:14px 15px;border-top:1px solid var(--border);font-size:13px;color:var(--muted);line-height:1.9}
 .btn-start{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:var(--accent);color:#fff;border:none;border-radius:50px;font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .15s;box-shadow:0 4px 20px rgba(181,147,90,.32)}
 .btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(181,147,90,.42)}
+
+/* ── 고객정보 화면 ── */
+.info-screen{max-width:560px;margin:0 auto;padding:40px 20px 100px}
+.info-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.info-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.7}
+.info-group{display:flex;flex-direction:column;gap:14px;margin-bottom:24px}
+.info-field{display:flex;flex-direction:column;gap:6px}
+.info-label{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.06em}
+.info-input{padding:12px 14px;background:var(--surface);border:1.5px solid var(--border2);border-radius:9px;color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;outline:none;transition:border-color .15s}
+.info-input:focus{border-color:var(--accent)}
+.info-input::placeholder{color:var(--muted2);font-size:12px}
+.info-req{color:var(--orange);margin-left:2px}
+
+/* ── 개인정보 동의 ── */
+.privacy-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px;overflow:hidden}
+.privacy-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.privacy-header-left{display:flex;align-items:center;gap:10px}
+.privacy-badge{font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:6px;background:var(--orange-l);color:var(--orange)}
+.privacy-title{font-size:13px;font-weight:500}
+.privacy-arrow{font-size:12px;color:var(--muted);transition:transform .2s}
+.privacy-arrow.open{transform:rotate(180deg)}
+.privacy-body{display:none;border-top:1px solid var(--border);padding:16px;max-height:260px;overflow-y:auto}
+.privacy-body.open{display:block}
+.privacy-body::-webkit-scrollbar{width:4px}
+.privacy-body::-webkit-scrollbar-track{background:var(--surface2)}
+.privacy-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.privacy-section{margin-bottom:18px}
+.privacy-section-title{font-size:11px;font-weight:700;color:var(--accent);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-bottom:8px}
+.privacy-text{font-size:11px;color:var(--muted);line-height:1.9}
+.privacy-table{width:100%;border-collapse:collapse;font-size:10px;margin-top:8px}
+.privacy-table th{background:var(--surface2);color:var(--muted);padding:6px 8px;text-align:left;border:1px solid var(--border);font-weight:500}
+.privacy-table td{padding:6px 8px;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+
+.agree-row{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;cursor:pointer}
+.agree-checkbox{width:18px;height:18px;border:1.5px solid var(--border2);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.agree-checkbox.checked{background:var(--accent);border-color:var(--accent)}
+.agree-checkbox.checked::after{content:'✓';color:#fff;font-size:11px;font-weight:700}
+.agree-text{font-size:13px;flex:1}
+.agree-required{font-size:10px;color:var(--orange);font-family:'DM Mono',monospace;margin-left:4px}
+
+.info-err{font-size:12px;color:#e05a5a;margin-top:8px;font-family:'DM Mono',monospace;min-height:16px}
+
 .cfg{max-width:560px;margin:0 auto;padding:36px 20px 100px}
 .cfg-title{font-size:20px;font-weight:700;margin-bottom:6px}
 .cfg-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
@@ -155,6 +197,7 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
   <span class="sh-brand">SAMWOL</span>
 </div>
 
+<!-- 비밀번호 -->
 <div class="screen active" id="sPw">
   <div class="pw-screen">
     <div class="pw-logo">SAMWOL</div>
@@ -176,6 +219,7 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
   </div>
 </div>
 
+<!-- 로비 -->
 <div class="screen" id="sLobby">
   <div class="lobby">
     <div class="brand-header">
@@ -196,10 +240,117 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
         선택 후 모델명·치수·구매링크를 입력하시면 더 정확한 설계가 가능합니다.
       </div>
     </details>
-    <button class="btn-start" onclick="goConfig()">시작하기 →</button>
+    <button class="btn-start" onclick="goInfo()">시작하기 →</button>
   </div>
 </div>
 
+<!-- 고객 정보 입력 -->
+<div class="screen" id="sInfo">
+  <div class="info-screen">
+    <div class="brand-header" style="text-align:center;margin-bottom:24px">
+      <div class="brand-logo">SAMWOL</div>
+      <div class="brand-divider"></div>
+      <div class="brand-service">고객 정보 입력</div>
+    </div>
+    <h2 class="info-title">기본 정보를 입력해주세요</h2>
+    <p class="info-sub">입력하신 정보는 프로젝트 진행에만 사용됩니다.</p>
+
+    <div class="info-group">
+      <div class="info-field">
+        <label class="info-label">고객님 성함 <span class="info-req">*필수</span></label>
+        <input class="info-input" id="infoName" placeholder="홍길동" type="text">
+      </div>
+      <div class="info-field">
+        <label class="info-label">프로젝트 주소 <span class="info-req">*필수</span></label>
+        <input class="info-input" id="infoAddr" placeholder="예: 수정구 청계산로 3길 22, 00아파트 00동 00호" type="text">
+      </div>
+      <div class="info-field">
+        <label class="info-label">이메일 주소 <span class="info-req">*필수</span></label>
+        <input class="info-input" id="infoEmail" placeholder="example@email.com" type="email">
+      </div>
+      <div class="info-field">
+        <label class="info-label">전화번호 <span class="info-req">*필수</span></label>
+        <input class="info-input" id="infoPhone" placeholder="010-0000-0000" type="tel">
+      </div>
+    </div>
+
+    <!-- 개인정보 동의 -->
+    <div class="privacy-wrap">
+      <div class="privacy-header" onclick="togglePrivacy()">
+        <div class="privacy-header-left">
+          <span class="privacy-badge">필수</span>
+          <span class="privacy-title">개인정보 수집 및 이용 동의 전문 보기</span>
+        </div>
+        <span class="privacy-arrow" id="privacyArrow">▼</span>
+      </div>
+      <div class="privacy-body" id="privacyBody">
+        <div class="privacy-section">
+          <div class="privacy-section-title">제1조 — 수집하는 개인정보 항목</div>
+          <div class="privacy-text">
+            삼월디자인(이하 "회사")은 인테리어 설계 서비스 제공을 위해 아래와 같은 개인정보를 수집합니다.<br><br>
+            <table class="privacy-table">
+              <tr><th>수집 항목</th><th>수집 목적</th><th>보유 기간</th></tr>
+              <tr><td>성명</td><td>고객 식별 및 서비스 제공</td><td>계약 종료 후 3년</td></tr>
+              <tr><td>프로젝트 주소</td><td>현장 확인 및 설계 진행</td><td>계약 종료 후 3년</td></tr>
+              <tr><td>이메일 주소</td><td>결과물 전달 및 업무 연락</td><td>계약 종료 후 3년</td></tr>
+              <tr><td>전화번호</td><td>상담 및 업무 연락</td><td>계약 종료 후 3년</td></tr>
+              <tr><td>가전제품 정보</td><td>인테리어 설계 반영</td><td>계약 종료 후 3년</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="privacy-section">
+          <div class="privacy-section-title">제2조 — 개인정보의 수집 및 이용 목적</div>
+          <div class="privacy-text">
+            회사는 수집한 개인정보를 다음 목적으로만 이용합니다.<br>
+            · 인테리어 설계 서비스 제공 및 계약 이행<br>
+            · 가전제품 배치 계획 수립 및 도면 반영<br>
+            · 프로젝트 진행 관련 업무 연락<br>
+            · 서비스 품질 향상을 위한 내부 분석
+          </div>
+        </div>
+        <div class="privacy-section">
+          <div class="privacy-section-title">제3조 — 개인정보의 제3자 제공</div>
+          <div class="privacy-text">
+            회사는 고객의 개인정보를 원칙적으로 외부에 제공하지 않습니다. 다만, 법령에 의한 경우 또는 수사기관의 요청이 있는 경우에 한하여 예외적으로 제공될 수 있습니다.
+          </div>
+        </div>
+        <div class="privacy-section">
+          <div class="privacy-section-title">제4조 — 개인정보의 보유 및 이용 기간</div>
+          <div class="privacy-text">
+            수집된 개인정보는 서비스 제공 기간 및 계약 종료 후 3년간 보유합니다. 보유 기간 종료 후에는 해당 정보를 지체 없이 파기합니다.
+          </div>
+        </div>
+        <div class="privacy-section">
+          <div class="privacy-section-title">제5조 — 개인정보 수집 거부 권리</div>
+          <div class="privacy-text">
+            고객은 개인정보 수집 및 이용에 동의하지 않을 권리가 있습니다. 다만, 필수 항목에 동의하지 않을 경우 서비스 이용이 제한될 수 있습니다.
+          </div>
+        </div>
+        <div class="privacy-section">
+          <div class="privacy-section-title">제6조 — 개인정보 처리 담당자</div>
+          <div class="privacy-text">
+            개인정보 처리 담당: 삼월디자인<br>
+            문의: contact@samwoldesign.com
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="agree-row" onclick="toggleAgree()">
+      <div class="agree-checkbox" id="agreeBox"></div>
+      <span class="agree-text">개인정보 수집 및 이용에 동의합니다 <span class="agree-required">(필수)</span></span>
+    </div>
+
+    <div class="info-err" id="infoErr"></div>
+
+    <div style="display:flex;gap:9px;margin-top:20px">
+      <button class="bback" onclick="show('sLobby')">← 뒤로</button>
+      <button class="bnext" onclick="goConfig()">다음 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG -->
 <div class="screen" id="sConfig">
   <div class="cfg">
     <h2 class="cfg-title">공간 구성 확인</h2>
@@ -211,12 +362,13 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
       <button class="badd" onclick="addSpace()">+ 추가</button>
     </div>
     <div style="margin-top:24px;display:flex;gap:9px;justify-content:flex-end">
-      <button class="bback" onclick="show('sLobby')">← 뒤로</button>
+      <button class="bback" onclick="show('sInfo')">← 뒤로</button>
       <button class="bnext" style="max-width:150px" onclick="startQuest()">퀘스트 시작 →</button>
     </div>
   </div>
 </div>
 
+<!-- QUEST -->
 <div class="screen" id="sQuest">
   <div class="qwrap">
     <div class="qhdr">
@@ -232,6 +384,7 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
   </div>
 </div>
 
+<!-- RESULT -->
 <div class="screen" id="sResult">
   <div class="rwrap">
     <div class="rhero">
@@ -246,6 +399,7 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
       © 2026 SAMWOL Design. All rights reserved.
     </div>
     <div class="acts">
+      <button class="bsubmit" onclick="sendToSheet()" style="display:flex;align-items:center;gap:6px;padding:13px 28px;background:var(--accent);border:none;border-radius:50px;color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;box-shadow:0 2px 12px rgba(181,147,90,.28)">📤 결과 전송하기</button>
       <button class="bcopy" onclick="copyResult()">📋 결과 복사 (노션 붙여넣기용)</button>
       <button class="brestart" onclick="restart()">↺ 처음부터</button>
     </div>
@@ -253,7 +407,11 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
 </div>
 
 <script>
-const ACCESS_CODE = '2026samwol';
+const ACCESS_CODE = '삼월디자인';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwAh43SM8a956_EVAO3XFgoMILgfhW_kwLj52zEBG8rPJITjiSAH5mAfGDRGFIVFO4n/exec';
+
+let customerInfo = {name:'', addr:'', email:'', phone:''};
+let agreed = false;
 
 function checkPw(){
   const v = document.getElementById('pwInput').value.trim().toUpperCase();
@@ -268,6 +426,44 @@ function checkPw(){
   }
 }
 
+function togglePrivacy(){
+  const body = document.getElementById('privacyBody');
+  const arrow = document.getElementById('privacyArrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+function toggleAgree(){
+  agreed = !agreed;
+  const box = document.getElementById('agreeBox');
+  if(agreed){ box.classList.add('checked'); }
+  else { box.classList.remove('checked'); }
+}
+
+function goInfo(){
+  buildMap();
+  show('sInfo');
+}
+
+function goConfig(){
+  const name = document.getElementById('infoName').value.trim();
+  const addr = document.getElementById('infoAddr').value.trim();
+  const email = document.getElementById('infoEmail').value.trim();
+  const phone = document.getElementById('infoPhone').value.trim();
+  const err = document.getElementById('infoErr');
+
+  if(!name){ err.textContent='성함을 입력해주세요.'; return; }
+  if(!addr){ err.textContent='프로젝트 주소를 입력해주세요.'; return; }
+  if(!email){ err.textContent='이메일 주소를 입력해주세요.'; return; }
+  if(!phone){ err.textContent='전화번호를 입력해주세요.'; return; }
+  if(!agreed){ err.textContent='개인정보 수집 및 이용에 동의해주세요.'; return; }
+
+  customerInfo = {name, addr, email, phone};
+  err.textContent='';
+  buildSList();
+  show('sConfig');
+}
+
 function KIT(){ return [
   {id:'fridge',name:'냉장고',emoji:'🧊',multi:true,modelPh:'예: LG 오브제 M875 / 삼성 비스포크 RF85',
     subs:[{type:'choice',lbl:'형태',key:'type',opts:['양문형','4도어','1도어 (컨버터블)','빌트인']}]},
@@ -276,13 +472,14 @@ function KIT(){ return [
   {id:'cooktop',name:'쿡탑',emoji:'🔥',multi:false,modelPh:'예: 삼성 NZ63B7747 / LG LUTD3035F',
     subs:[
       {type:'choice',lbl:'종류',key:'type',opts:['인덕션','가스쿡탑','미정']},
+      {type:'text',lbl:'쿡탑 모델명 / 제품명',key:'cooktopmodel',ph:'예: 삼성 NZ63B7747 / LG LUTD3035F'},
       {type:'choice',lbl:'후드 연동',key:'hood',opts:['후드 일체형','후드 별도','해당없음']},
-      {type:'text',lbl:'후드 모델명 / 제품명',key:'hoodmodel',ph:'후드 별도 선택 시 입력',showIf:{key:'hood',val:'후드 별도'}},
+      {type:'textinline',lbl:'후드 모델명 / 제품명',key:'hoodmodel',ph:'후드 별도 선택 시 입력',showIf:{key:'hood',val:'후드 별도'}},
     ]},
   {id:'oven',name:'오븐',emoji:'🫙',multi:false,modelPh:'예: 삼성 NV75T9579 / LG LWS3063ST',
     subs:[{type:'choice',lbl:'타입',key:'type',opts:['빌트인','스탠드얼론','아직 모름']}]},
   {id:'microwave',name:'전자레인지 / 오븐레인지',emoji:'📡',multi:false,modelPh:'예: LG NeoChef MH6042D / 삼성 MS23F301TAK',subs:[]},
-  {id:'dishwasher',name:'식기세척기',emoji:'🍽',multi:false,modelPh:'예: LG 디오스 DUE6BG / 삼성 비스포크 DW60BG',
+  {id:'dishwasher',name:'식기세척기',emoji:'🍽',multi:false,modelPh:'예: 삼성 비스포크 DW60BG',
     subs:[
       {type:'choice',lbl:'설치',key:'type',opts:['빌트인','스탠드형']},
       {type:'choice',lbl:'빌트인 타입',key:'dishtype',opts:['가구패널 부착형','일반 빌트인'],showIf:{key:'type',val:'빌트인'}},
@@ -290,14 +487,21 @@ function KIT(){ return [
   {id:'purifier',name:'정수기',emoji:'💧',multi:false,modelPh:'예: LG 퓨리케어 WD501 / 코웨이 CHP-7210N',
     subs:[{type:'choice',lbl:'방식',key:'type',opts:['직수형','저수조형','미정']}]},
   {id:'foodwaste',name:'음식물처리기',emoji:'♻️',multi:false,modelPh:'예: 스마트카라 PCS-400 / 루펜 SL-201',subs:[]},
+  {id:'grinder',name:'음식물분쇄기',emoji:'🌀',multi:false,modelPh:'예: 뉴해피크린 DW-553 / 쉘퍼 싱크대 분쇄기',
+    subs:[{type:'choice',lbl:'설치 방식',key:'type',opts:['싱크대 설치형 (디스포저)','스탠드형','미정']}]},
   {id:'ricecooker',name:'전기밥솥',emoji:'🍚',multi:false,modelPh:'예: 쿠쿠 CRP-P1009F / 쿠첸 CR-0655',subs:[]},
   {id:'coffee',name:'커피머신',emoji:'☕',multi:false,modelPh:'예: 드롱기 EC9865 / 필립스 EP3326',subs:[]},
   {id:'winefridge',name:'와인냉장고',emoji:'🍷',multi:false,modelPh:'예: 위니아 WWR45FZWSR / 듀나비 DF-46W',subs:[]},
+  {id:'robot_k',name:'로봇청소기',emoji:'🤖',multi:false,modelPh:'예: 삼성 비스포크 제트봇 AI / 로보락 S8 Pro',
+    subs:[{type:'choice',lbl:'직배수 여부',key:'drain',opts:['직배수형','일반형 (수동 비움)','미정']}]},
 ];}
 
 function LIV(){ return [
   {id:'tv_l',name:'TV',emoji:'📺',multi:false,modelPh:'예: 삼성 QLED QN65Q80C / LG OLED65C3',
-    subs:[{type:'text',lbl:'희망 크기',key:'size',ph:'예: 65인치'}]},
+    subs:[
+      {type:'text',lbl:'희망 크기',key:'size',ph:'예: 65인치'},
+      {type:'choice',lbl:'설치 방식',key:'mount',opts:['스탠드형','브라켓형','미정']},
+    ]},
   {id:'soundbar',name:'사운드바 / 홈시어터',emoji:'🔊',multi:false,modelPh:'예: 삼성 HW-Q990C / LG S90QY',subs:[]},
   {id:'airp_l',name:'공기청정기',emoji:'💨',multi:false,modelPh:'예: LG 퓨리케어 AS204NNFA / 삼성 AX90T9080',subs:[]},
   {id:'robot',name:'로봇청소기',emoji:'🤖',multi:false,modelPh:'예: 삼성 비스포크 제트봇 AI / 로보락 S8 Pro',
@@ -308,7 +512,10 @@ function LIV(){ return [
 
 function MST(){ return [
   {id:'tv_m',name:'TV',emoji:'📺',multi:false,modelPh:'예: 삼성 QLED QN55Q80C / LG OLED55C3',
-    subs:[{type:'text',lbl:'희망 크기',key:'size',ph:'예: 55인치'}]},
+    subs:[
+      {type:'text',lbl:'희망 크기',key:'size',ph:'예: 55인치'},
+      {type:'choice',lbl:'설치 방식',key:'mount',opts:['스탠드형','브라켓형','미정']},
+    ]},
   {id:'airp_m',name:'공기청정기',emoji:'💨',multi:false,modelPh:'예: LG 퓨리케어 AS204NNFA / 삼성 AX90T9080',subs:[]},
   {id:'massage',name:'안마의자',emoji:'🪑',multi:false,modelPh:'예: 바디프랜드 파밀레C / 코지마 아르코 CM-A250',subs:[]},
   {id:'styler_m',name:'스타일러',emoji:'👗',multi:false,modelPh:'예: LG 스타일러 S3TF / 삼성 에어드레서 DF60R',
@@ -341,7 +548,11 @@ function LAU(){ return [
 ];}
 
 function ROM(){ return [
-  {id:'tv_r',name:'TV',emoji:'📺',multi:false,modelPh:'예: 삼성 QLED / LG OLED',subs:[]},
+  {id:'tv_r',name:'TV',emoji:'📺',multi:false,modelPh:'예: 삼성 QLED / LG OLED',
+    subs:[
+      {type:'text',lbl:'희망 크기',key:'size',ph:'예: 55인치'},
+      {type:'choice',lbl:'설치 방식',key:'mount',opts:['스탠드형','브라켓형','미정']},
+    ]},
   {id:'airp_r',name:'공기청정기',emoji:'💨',multi:false,modelPh:'예: LG 퓨리케어 / 삼성 블루스카이',subs:[]},
 ];}
 
@@ -367,7 +578,6 @@ function setKey(id,inst){
   if(!answers[k]) answers[k]={status:null,subs:{},model:'',link:'',note:'',dim:{w:'',h:'',d:''},instances:1};
 }
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-function goConfig(){buildMap();buildSList();show('sConfig');}
 
 function buildMap(){
   const el=document.getElementById('qmap');el.innerHTML='';
@@ -480,6 +690,9 @@ function mkCard(item,inst,total){
       } else if(sub.type==='text'){
         if(sub.showIf && ans.subs[sub.showIf.key] !== sub.showIf.val) return;
         subsHtml+=`<div><span class="flbl">${sub.lbl}</span><input class="fi" placeholder="${sub.ph||''}" value="${ans.subs[sub.key]||''}" onchange="answers['${k}'].subs['${sub.key}']=this.value"></div>`;
+      } else if(sub.type==='textinline'){
+        if(sub.showIf && ans.subs[sub.showIf.key] !== sub.showIf.val) return;
+        subsHtml+=`<input class="fi" placeholder="${sub.lbl}: ${sub.ph||''}" value="${ans.subs[sub.key]||''}" onchange="answers['${k}'].subs['${sub.key}']=this.value" style="margin-top:-4px">`;
       }
     });
     const dimNote=item.dimNote?`<span class="flbl" style="color:var(--orange)">${item.dimNote}</span>`:'';
@@ -496,9 +709,9 @@ function mkCard(item,inst,total){
           <input class="fi dw" placeholder="D" value="${ans.dim?.d||''}" onchange="answers['${k}'].dim.d=this.value">
         </div></div>
       <div><span class="flbl">구매 링크 (선택)</span>
-        <input class="fi" placeholder="https://..." value="${ans.link||''}" onchange="answers['${k}'].link=this.value"></div>
+        <textarea class="fi" placeholder="https://..." rows="2" style="resize:none;line-height:1.6" onchange="answers['${k}'].link=this.value">${ans.link||''}</textarea></div>
       <div><span class="flbl">메모</span>
-        <input class="fi" placeholder="특이사항, 컬러, 요청사항 등" value="${ans.note||''}" onchange="answers['${k}'].note=this.value"></div>
+        <textarea class="fi" placeholder="특이사항, 컬러, 요청사항 등" rows="2" style="resize:none;line-height:1.6" onchange="answers['${k}'].note=this.value">${ans.note||''}</textarea></div>
     </div>`;
   }
   card.innerHTML=`
@@ -582,6 +795,20 @@ function next(){
 
 function buildResult(){
   const el=document.getElementById('rbody');el.innerHTML='';
+
+  // 고객 정보 섹션
+  const infoSec=document.createElement('div');infoSec.className='rsec';
+  infoSec.innerHTML=`<div class="rsh"><span>👤</span><span>고객 정보</span></div>
+    <table class="rt">
+      <tbody>
+        <tr><td style="width:30%;color:var(--muted)">성함</td><td>${customerInfo.name}</td></tr>
+        <tr><td style="color:var(--muted)">프로젝트 주소</td><td>${customerInfo.addr}</td></tr>
+        <tr><td style="color:var(--muted)">이메일</td><td>${customerInfo.email}</td></tr>
+        <tr><td style="color:var(--muted)">전화번호</td><td>${customerInfo.phone}</td></tr>
+      </tbody>
+    </table>`;
+  el.appendChild(infoSec);
+
   spaces.forEach(sp=>{
     const rows=[];
     sp.items.forEach(it=>{
@@ -617,9 +844,57 @@ function buildResult(){
   });
 }
 
+function sendToSheet(){
+  const rows=[];
+  spaces.forEach(sp=>{
+    sp.items.forEach(it=>{
+      const inst=answers[`${it.id}:0`]?.instances||1;
+      for(let i=0;i<inst;i++){
+        const ans=answers[`${it.id}:${i}`];
+        if(!ans||ans.status==='none'||!ans.status) continue;
+        const subStr=Object.values(ans.subs||{}).filter(Boolean).join(', ');
+        const dimStr=[ans.dim?.w,ans.dim?.h,ans.dim?.d].filter(Boolean).join(' × ');
+        rows.push({
+          space:sp.name,name:it.name,
+          status:ans.status==='have'?'있음':'구매예정',
+          sub:subStr,model:ans.model||'',dim:dimStr,
+          link:ans.link||'',note:ans.note||''
+        });
+      }
+    });
+    const extraKey=`extra_${sp.id}`;
+    (answers[extraKey]?.items||[]).forEach(item=>{
+      if(item.name) rows.push({space:sp.name,name:item.name,status:item.status||'',sub:'',model:'',dim:'',link:'',note:''});
+    });
+  });
+
+  const btn=document.querySelector('.bsubmit');
+  if(btn) btn.textContent='전송 중...';
+
+  fetch(SHEET_URL,{
+    method:'POST',mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({customer:customerInfo, rows})
+  }).then(()=>{
+    if(btn){
+      btn.textContent='✅ 전송 완료!';
+      btn.style.background='var(--green)';
+    }
+  }).catch(()=>{
+    if(btn){
+      btn.textContent='❌ 전송 실패 — 다시 시도해주세요';
+      btn.style.background='#e05a5a';
+    }
+  });
+}
+
 function copyResult(){
-  let txt='삼월디자인 | 가전제품 목록\n';
-  txt+='='.repeat(40)+'\n\n';
+  let txt=`삼월디자인 | 가전제품 목록\n${'='.repeat(40)}\n\n`;
+  txt+=`👤 고객 정보\n`;
+  txt+=`  성함: ${customerInfo.name}\n`;
+  txt+=`  주소: ${customerInfo.addr}\n`;
+  txt+=`  이메일: ${customerInfo.email}\n`;
+  txt+=`  전화: ${customerInfo.phone}\n\n`;
   spaces.forEach(sp=>{
     const rows=[];
     sp.items.forEach(it=>{
@@ -668,7 +943,18 @@ function confetti(){
   }
 }
 
-function restart(){init();show('sLobby');}
+function restart(){
+  agreed=false;
+  document.getElementById('agreeBox').classList.remove('checked');
+  document.getElementById('infoName').value='';
+  document.getElementById('infoAddr').value='';
+  document.getElementById('infoEmail').value='';
+  document.getElementById('infoPhone').value='';
+  customerInfo={name:'',addr:'',email:'',phone:''};
+  init();
+  show('sLobby');
+}
+
 init();
 </script>
 </body>
