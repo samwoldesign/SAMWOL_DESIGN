@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>가전제품 퀘스트 — SAMWOL</title>
+<title>가전제품 리스트업 — SAMWOL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -205,7 +205,7 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
     <div class="pw-box">
       <h2 class="pw-title">🔐 접근 코드 입력</h2>
       <p class="pw-sub">담당 디자이너로부터 전달받은<br>접근 코드를 입력해주세요</p>
-      <input class="pw-input" id="pwInput" type="password"
+      <input class="pw-input" id="pwInput" type="text"
         placeholder="접근 코드 입력"
         onkeydown="if(event.key==='Enter')checkPw()">
       <button class="pw-btn" onclick="checkPw()">확인</button>
@@ -225,7 +225,7 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
     <div class="brand-header">
       <div class="brand-logo">SAMWOL</div>
       <div class="brand-divider"></div>
-      <div class="brand-service">가전제품 퀘스트 시스템</div>
+      <div class="brand-service">가전제품 리스트업 시스템</div>
     </div>
     <h1 class="ltitle">새 공간에 들어올<br><em>가전제품</em>을 알려주세요</h1>
     <p class="lsub">공간별로 하나씩 선택하시면<br>마지막에 전체 목록이 자동으로 정리됩니다 😊</p>
@@ -363,7 +363,7 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
     </div>
     <div style="margin-top:24px;display:flex;gap:9px;justify-content:flex-end">
       <button class="bback" onclick="show('sInfo')">← 뒤로</button>
-      <button class="bnext" style="max-width:150px" onclick="startQuest()">퀘스트 시작 →</button>
+      <button class="bnext" style="max-width:150px" onclick="startQuest()">리스트업 시작 →</button>
     </div>
   </div>
 </div>
@@ -389,13 +389,13 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
   <div class="rwrap">
     <div class="rhero">
       <div class="trophy">🎉</div>
-      <h2 class="rh">퀘스트 완료!</h2>
+      <h2 class="rh">리스트업 완료!</h2>
       <p class="rs">전체 가전제품 목록이 정리되었습니다</p>
     </div>
     <div id="rbody"></div>
     <div class="result-brand">
       <strong>SAMWOL Design</strong><br>
-      본 결과는 삼월디자인의 가전제품 퀘스트 시스템을 통해 작성되었습니다.<br>
+      본 결과는 삼월디자인의 가전제품 리스트업 시스템을 통해 작성되었습니다.<br>
       © 2026 SAMWOL Design. All rights reserved.
     </div>
     <div class="acts">
