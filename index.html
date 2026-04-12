@@ -65,8 +65,6 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .guide-in{padding:14px 15px;border-top:1px solid var(--border);font-size:13px;color:var(--muted);line-height:1.9}
 .btn-start{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:var(--accent);color:#fff;border:none;border-radius:50px;font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .15s;box-shadow:0 4px 20px rgba(181,147,90,.32)}
 .btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(181,147,90,.42)}
-
-/* ── 고객정보 화면 ── */
 .info-screen{max-width:560px;margin:0 auto;padding:40px 20px 100px}
 .info-title{font-size:20px;font-weight:700;margin-bottom:6px}
 .info-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.7}
@@ -77,8 +75,6 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .info-input:focus{border-color:var(--accent)}
 .info-input::placeholder{color:var(--muted2);font-size:12px}
 .info-req{color:var(--orange);margin-left:2px}
-
-/* ── 개인정보 동의 ── */
 .privacy-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px;overflow:hidden}
 .privacy-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .privacy-header-left{display:flex;align-items:center;gap:10px}
@@ -97,16 +93,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-seri
 .privacy-table{width:100%;border-collapse:collapse;font-size:10px;margin-top:8px}
 .privacy-table th{background:var(--surface2);color:var(--muted);padding:6px 8px;text-align:left;border:1px solid var(--border);font-weight:500}
 .privacy-table td{padding:6px 8px;border:1px solid var(--border);color:var(--muted);vertical-align:top}
-
 .agree-row{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;cursor:pointer}
 .agree-checkbox{width:18px;height:18px;border:1.5px solid var(--border2);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
 .agree-checkbox.checked{background:var(--accent);border-color:var(--accent)}
 .agree-checkbox.checked::after{content:'✓';color:#fff;font-size:11px;font-weight:700}
 .agree-text{font-size:13px;flex:1}
 .agree-required{font-size:10px;color:var(--orange);font-family:'DM Mono',monospace;margin-left:4px}
-
 .info-err{font-size:12px;color:#e05a5a;margin-top:8px;font-family:'DM Mono',monospace;min-height:16px}
-
 .cfg{max-width:560px;margin:0 auto;padding:36px 20px 100px}
 .cfg-title{font-size:20px;font-weight:700;margin-bottom:6px}
 .cfg-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
@@ -407,8 +400,12 @@ table.rt tr:nth-child(even) td{background:var(--surface2)}
 </div>
 
 <script>
+// ═══════════════════════════════════════════════════════════════
+// 🔐 SAMWOL DESIGN — 보안 설정 (수정된 부분 1/3)
+// ═══════════════════════════════════════════════════════════════
 const ACCESS_CODE = '삼월디자인';
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwAh43SM8a956_EVAO3XFgoMILgfhW_kwLj52zEBG8rPJITjiSAH5mAfGDRGFIVFO4n/exec';
+const SAMWOL_TOKEN = 'SAMWOL_fadd7f980ae540d1bc3a658d027894a3'; // 🔐 보안 토큰 추가
 
 let customerInfo = {name:'', addr:'', email:'', phone:''};
 let agreed = false;
@@ -844,7 +841,11 @@ function buildResult(){
   });
 }
 
-function sendToSheet(){
+// ═══════════════════════════════════════════════════════════════
+// 🔐 SAMWOL 보안 전송 함수 (수정된 부분 2/3) 
+// 기존 sendToSheet 함수를 완전 교체
+// ═══════════════════════════════════════════════════════════════
+async function sendToSheet(){
   const rows=[];
   spaces.forEach(sp=>{
     sp.items.forEach(it=>{
@@ -869,23 +870,61 @@ function sendToSheet(){
   });
 
   const btn=document.querySelector('.bsubmit');
-  if(btn) btn.textContent='전송 중...';
+  if(btn){ btn.textContent='전송 중...'; btn.disabled=true; }
 
-  fetch(SHEET_URL,{
-    method:'POST',mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({customer:customerInfo, rows})
-  }).then(()=>{
-    if(btn){
-      btn.textContent='✅ 전송 완료!';
-      btn.style.background='var(--green)';
+  try {
+    console.log('🔐 SAMWOL 보안 전송 시작...');
+
+    // 🔐 보안 페이로드 구성: 토큰 + 출처 검증 + 데이터
+    const securePayload = {
+      token: SAMWOL_TOKEN,                    // 비밀 토큰 (Apps Script 인증용)
+      origin: window.location.origin,         // 출처 검증용 (https://samwoldesign.github.io)
+      customer: customerInfo,                 // 고객 정보
+      rows: rows                             // 가전제품 데이터
+    };
+
+    // 🌐 보안 전송 실행 (CORS 문제 해결)
+    const response = await fetch(SHEET_URL, {
+      method: 'POST',
+      // ❌ mode: 'no-cors' 제거 → 서버 응답을 읽을 수 있게 됨
+      headers: { 
+        'Content-Type': 'text/plain;charset=utf-8'  // CORS 문제 방지용 헤더
+      },
+      body: JSON.stringify(securePayload)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
-  }).catch(()=>{
+
+    const result = await response.json();
+    console.log('📨 Apps Script 응답:', result);
+
+    // ✅ 서버 응답 분석 및 처리
+    if (result.success) {
+      console.log('✅ SAMWOL 전송 성공:', result.message);
+      if(btn){
+        btn.textContent='✅ 전송 완료!';
+        btn.style.background='var(--green)';
+        btn.disabled=false;
+      }
+      alert('성공적으로 저장되었습니다!\n구글 시트 저장 및 이메일 알림이 완료되었습니다.');
+    } else {
+      // ❌ 서버에서 거부 (토큰 오류, 출처 오류 등)
+      console.error('❌ 서버 거부:', result.message);
+      throw new Error(result.message || '서버에서 요청을 거부했습니다');
+    }
+
+  } catch (networkError) {
+    // 🌐 네트워크 오류 또는 보안 차단 처리
+    console.error('🌐 전송 오류:', networkError);
     if(btn){
       btn.textContent='❌ 전송 실패 — 다시 시도해주세요';
       btn.style.background='#e05a5a';
+      btn.disabled=false;
     }
-  });
+    alert('전송이 실패했습니다.\n사유: ' + networkError.message + '\n\n잠시 후 다시 시도해주세요.');
+  }
 }
 
 function copyResult(){
